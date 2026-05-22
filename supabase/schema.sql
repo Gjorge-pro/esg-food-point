@@ -1063,4 +1063,4 @@ ON public.order_items
 AS PERMISSIVE
 FOR INSERT
 TO anon, authenticated
-WITH CHECK (true);
+WITH CHECK (true); 
