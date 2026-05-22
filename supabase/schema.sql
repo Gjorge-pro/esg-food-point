@@ -1045,16 +1045,16 @@ exception when others then null;
 end $$;
 
 -- adding policies for customers and orders to link with daily sessions
-ALTER POLICY "allow public customer orders"
-ON "public"."orders"
-TO anon
-WITH CHECK (
+alter policy "allow public customer orders"
+on "public"."orders"
+to anon, authenticated
+with check (
   true
 );
 
-ALTER POLICY "allow public customer order_items"
-ON "public"."order_items"
-TO anon
-WITH CHECK (
+alter policy "allow public customer order_items"
+on "public"."order_items"
+to anon, authenticated
+with check (
   true
 );
