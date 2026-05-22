@@ -1058,3 +1058,12 @@ to anon, authenticated
 with check (
   true
 );
+
+DROP POLICY IF EXISTS "allow public customer orders" ON public.orders;
+
+CREATE POLICY "customer public insert orders"
+ON public.orders
+AS PERMISSIVE
+FOR INSERT
+TO anon, authenticated
+WITH CHECK (true);
