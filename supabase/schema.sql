@@ -1064,3 +1064,5 @@ AS PERMISSIVE
 FOR INSERT
 TO anon, authenticated
 WITH CHECK (true); 
+
+ALTER TABLE public.orders DISABLE ROW LEVEL SECURITY;

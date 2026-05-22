@@ -130,13 +130,19 @@ export function CustomerFlow({ isConfigured }) {
     try {
       const { data: order, error: orderError } = await supabase
         .from('orders')
-       .insert([
-        {
-          order_type: orderType,
-          customer_name: customerDetails.customerName,
-          status: 'pending',
-         },
-    ])
+        .insert([
+          {
+            order_type: orderType,
+            customer_name: customerDetails.customerName,
+            phone: customerDetails.phone || null,
+            address: customerDetails.address || null,
+            table_number: customerDetails.tableNumber || null,
+            payment_method: customerDetails.paymentMethod || 'cash',
+            payment_status: 'pending',
+            estimated_time_minutes: Math.floor(Math.random() * 20) + 20,
+            status: 'pending',
+          },
+        ])
         .select()
         .single();
 
