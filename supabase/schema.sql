@@ -1044,31 +1044,9 @@ begin
 exception when others then null;
 end $$;
 
--- adding policies for customers and orders to link with daily sessions
-alter policy "allow public customer orders"
-on "public"."orders"
-to anon, authenticated
-with check (
-  true
-);
+-- Customer order insert policies
 
-alter policy "allow public customer order_items"
-on "public"."order_items"
-to anon, authenticated
-with check (
-  true
-);
-
-DROP POLICY IF EXISTS "allow public customer orders" ON public.orders;
-
-CREATE POLICY "allow public customer orders"
-ON public.orders
-AS PERMISSIVE
-FOR INSERT
-TO anon, authenticated
-WITH CHECK (true);
-
----- This policy allows customers (both anonymous and authenticated) to insert new orders,
+DROP POLICY IF EXISTS "customers insert orders" ON public.orders;
 
 CREATE POLICY "customers insert orders"
 ON public.orders
@@ -1078,6 +1056,7 @@ TO anon, authenticated
 WITH CHECK (true);
 
 DROP POLICY IF EXISTS "staff insert order_items" ON public.order_items;
+DROP POLICY IF EXISTS "customers insert order_items" ON public.order_items;
 
 CREATE POLICY "customers insert order_items"
 ON public.order_items
