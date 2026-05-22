@@ -297,22 +297,78 @@ where not exists (
 );
 
 -- Insert menu items (prices in TSH - Tanzanian Shilling)
-insert into public.menu_items (name, price, category_id, available)
-select 
+-- ============================================
+-- SEED MENU ITEMS
+-- ============================================
+
+insert into public.menu_items (
+  name,
+  price,
+  category_id,
+  available
+)
+select
   seed.name,
   seed.price,
-  (select id from public.categories where name = seed.category and parent_id is not null limit 1),
+  (
+    select id
+    from public.categories
+    where name = seed.category
+    and parent_id is not null
+    limit 1
+  ),
   seed.available
 from (
   values
-    ('Coconut Rice Bowl'::text, 15000::numeric, 'Lunch'::text, true::boolean),
-    ('Nyama Choma Plate'::text, 25000::numeric, 'Lunch'::text, true::boolean),
-    ('Passion Cooler'::text, 8000::numeric, 'Juices'::text, true::boolean),
-    ('Ginger Tea'::text, 3000::numeric, 'Hot Drinks'::text, true::boolean),
+
+    -- MAIN MEALS
+    ('Coconut Rice Bowl with Beef Meat'::text, 2000::numeric, 'Lunch'::text, true::boolean),
+    ('Nyama Choma Plate'::text, 3000::numeric, 'Lunch'::text, true::boolean),
+    ('Ugali Dagaa'::text, 1500::numeric, 'Lunch'::text, true::boolean),
+    ('Ugali Samaki'::text, 2000::numeric, 'Lunch'::text, true::boolean),
+    ('Ugali Nyama'::text, 2000::numeric, 'Lunch'::text, true::boolean),
+
+    -- BREAKFAST
+    ('Chapati'::text, 500::numeric, 'Breakfast'::text, true::boolean),
+    ('Maandazi'::text, 500::numeric, 'Breakfast'::text, true::boolean),
+    ('Beef Soup'::text, 1500::numeric, 'Breakfast'::text, true::boolean),
+    ('Chicken Soup'::text, 2000::numeric, 'Breakfast'::text, true::boolean),
+
+    -- HOT DRINKS
+    ('Ginger Tea'::text, 300::numeric, 'Hot Drinks'::text, true::boolean),
+    ('Fresh Milk'::text, 1200::numeric, 'Hot Drinks'::text, true::boolean),
+    ('Milk Tea'::text, 500::numeric, 'Hot Drinks'::text, true::boolean),
+    ('Tea'::text, 300::numeric, 'Hot Drinks'::text, true::boolean),
+
+    -- SOFT DRINKS
+    ('Pepsi'::text, 700::numeric, 'Soft Drinks'::text, true::boolean),
+    ('Mirinda Nyeusi'::text, 700::numeric, 'Soft Drinks'::text, true::boolean),
+    ('Coca-Cola'::text, 700::numeric, 'Soft Drinks'::text, true::boolean),
+    ('7 Up'::text, 700::numeric, 'Soft Drinks'::text, true::boolean),
+
+    -- JUICES
+    ('Passion Cooler'::text, 1000::numeric, 'Juices'::text, true::boolean),
+    ('Avocado Juice'::text, 1000::numeric, 'Juices'::text, true::boolean),
+    ('Mango Juice'::text, 1000::numeric, 'Juices'::text, true::boolean),
+    ('Pineapple Juice'::text, 1000::numeric, 'Juices'::text, true::boolean),
+
+    -- WATER
+    ('Pure Water'::text, 500::numeric, 'Water'::text, true::boolean),
+    ('Pure Water 1 litre'::text, 1000::numeric, 'Water'::text, true::boolean),
+
+    -- SNACKS
+    ('Samosa'::text, 500::numeric, 'Bites'::text, true::boolean),
+    ('Doughnuts'::text, 500::numeric, 'Pastries'::text, true::boolean),
+
+    -- SPECIALS
     ('Chef Lunch Special'::text, 40000::numeric, 'Chef''s Special'::text, false::boolean)
+
 ) as seed(name, price, category, available)
+
 where not exists (
-  select 1 from public.menu_items existing where existing.name = seed.name
+  select 1
+  from public.menu_items existing
+  where existing.name = seed.name
 );
 
 -- STEP 1: Create auth users in Supabase Console first, then use their real UUIDs below

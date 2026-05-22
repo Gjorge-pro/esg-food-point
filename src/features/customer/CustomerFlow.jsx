@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 import { ToastContainer, useToast } from '../../components/Toast';
-import { ThemeToggle } from '../../components/ThemeToggle';
 import { CartPanel } from './CartPanel';
 import { CheckoutForm } from './CheckoutForm';
 import { DineInActionsPanel } from './DineInActionsPanel';
@@ -378,9 +377,6 @@ export function CustomerFlow({ isConfigured }) {
 
   return (
     <>
-      <div className="fixed top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
       {renderContent()}
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </>
