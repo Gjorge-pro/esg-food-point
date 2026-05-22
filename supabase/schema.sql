@@ -289,8 +289,7 @@ select name, (select id from public.categories where name = 'Snacks' and parent_
 from (
   values
     ('Bites'::text),
-    ('Fries'::text),
-    ('Pastries'::text)
+    ('Fries'::text)
 ) as seed(name)
 where not exists (
   select 1 from public.categories existing where existing.name = seed.name and existing.parent_id is not null
@@ -358,7 +357,15 @@ from (
 
     -- SNACKS
     ('Samosa'::text, 500::numeric, 'Bites'::text, true::boolean),
-    ('Doughnuts'::text, 500::numeric, 'Pastries'::text, true::boolean),
+    ('Doughnuts'::text, 500::numeric, 'Bites'::text, true::boolean),
+    ('Afkeki'::text, 500::numeric, 'Bites'::text, true::boolean),
+    ('French Fries'::text, 1000::numeric, 'Fries'::text, true::boolean),
+    ('Chips Mayai'::text, 1500::numeric, 'Fries'::text, true::boolean),
+    ('Chips Mayai with Sausages'::text, 2000::numeric, 'Fries'::text, true::boolean),
+    ('Chips Mayai with Beef'::text, 2500::numeric, 'Fries'::text, true::boolean),
+    ('Chips Mayai with Chicken'::text, 2500::numeric, 'Fries'::text, true::boolean),
+    ('Meat Pie'::text, 1000::numeric, 'Bites'::text, true::boolean),
+    
 
     -- SPECIALS
     ('Chef Lunch Special'::text, 40000::numeric, 'Chef''s Special'::text, false::boolean)
