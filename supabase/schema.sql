@@ -1043,3 +1043,18 @@ begin
   alter publication supabase_realtime add table public.daily_sessions;
 exception when others then null;
 end $$;
+
+-- adding policies for customers and orders to link with daily sessions
+ALTER POLICY "allow public customer orders"
+ON "public"."orders"
+TO anon
+WITH CHECK (
+  true
+);
+
+ALTER POLICY "allow public customer order_items"
+ON "public"."order_items"
+TO anon
+WITH CHECK (
+  true
+);
