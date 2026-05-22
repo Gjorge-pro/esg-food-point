@@ -240,33 +240,33 @@ export function CustomerFlow({ isConfigured }) {
 
       case FLOW_STEPS.MENU:
         return (
-          <div className="min-h-screen">
-            <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
-              <div className="mb-8 flex items-center justify-between">
-                <div>
+          <div className="min-h-screen pt-16 sm:pt-0">
+            <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+              <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div className="min-w-0">
                   <button
                     onClick={resetOrderFlow}
-                    className="mb-4 flex items-center gap-2 text-[var(--text-secondary)] transition-all duration-200 hover:text-[var(--text-primary)]"
+                    className="mb-3 sm:mb-4 flex items-center gap-2 text-[var(--text-secondary)] transition-all duration-200 hover:text-[var(--text-primary)] text-sm"
                   >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={18} />
                     <span className="font-medium">Change order type</span>
                   </button>
-                  <h1 className="text-3xl font-bold text-[var(--text-primary)]">Menu</h1>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">Menu</h1>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-[var(--text-secondary)]">Items in cart</p>
-                  <p className="text-2xl font-bold text-[var(--color-primary)]">{cart.length}</p>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-xs sm:text-sm text-[var(--text-secondary)]">Items in cart</p>
+                  <p className="text-xl sm:text-2xl font-bold text-[var(--color-primary)]">{cart.length}</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+              <div className="grid grid-cols-1 gap-6 lg:gap-8 lg:grid-cols-4">
                 <div className="lg:col-span-3">
                   <MenuBrowser onAddToCart={handleAddToCart} />
                 </div>
 
                 <div className="lg:col-span-1">
-                  <div className="sticky top-8 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-6 shadow-sm">
-                    <h2 className="mb-6 text-lg font-bold text-[var(--text-primary)]">Your Cart</h2>
+                  <div className="sticky top-16 sm:top-4 rounded-xl sm:rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4 sm:p-6 shadow-sm">
+                    <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-[var(--text-primary)]">Your Cart</h2>
                     <CartPanel
                       cartItems={cart}
                       onUpdateQuantity={handleUpdateQuantity}
@@ -283,13 +283,13 @@ export function CustomerFlow({ isConfigured }) {
 
       case FLOW_STEPS.CHECKOUT:
         return (
-          <div className="min-h-screen">
-            <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-8 shadow-sm">
-                <h1 className="mb-8 text-3xl font-bold text-[var(--text-primary)]">Checkout</h1>
+          <div className="min-h-screen pt-16 sm:pt-0">
+            <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+              <div className="rounded-xl sm:rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-4 sm:p-6 md:p-8 shadow-sm max-w-4xl mx-auto">
+                <h1 className="mb-6 sm:mb-8 text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">Checkout</h1>
 
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                  <div>
+                <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+                  <div className="min-w-0">
                     <CheckoutForm
                       orderType={orderType}
                       onBack={() => setFlowStep(FLOW_STEPS.MENU)}

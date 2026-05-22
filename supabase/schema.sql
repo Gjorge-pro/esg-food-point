@@ -941,3 +941,105 @@ begin
   alter publication supabase_realtime add table public.payment_transactions;
 exception when others then null;
 end $$;
+
+-- ============================================
+-- PHASE C: DAILY OPERATIONS CONTROL
+-- ============================================
+
+-- Daily Sessions: single operational anchor for opening, service, and closing work.
+create table if not exists public.daily_sessions (
+  id uuid primary key default gen_random_uuid(),
+  business_date date not null unique default CURRENT_DATE,
+  status text not null default 'opening' check (status in ('opening', 'open', 'closing', 'closed')),
+  opened_by uuid references auth.users(id) on delete set null,
+  closed_by uuid references auth.users(id) on delete set null,
+  opening_notes text,
+  closing_notes text,
+  cash_opening numeric(10, 2) not null default 0 check (cash_opening >= 0),
+  cash_closing numeric(10, 2) check (cash_closing >= 0),
+  opened_at timestamptz not null default now(),
+  closed_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Reuse Phase A/B operational tables while allowing every record to point at the daily session.
+alter table if exists public.stock_opening
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.stock_usage
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.stock_closing
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.production
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.production_batches
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.inventory_movements
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.ingredient_movements
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.financial_expenses
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.income
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.expenses
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.debts
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.debts
+add column if not exists supplier_id uuid references public.suppliers(id) on delete set null;
+
+alter table if exists public.debts
+add column if not exists due_date date;
+
+alter table if exists public.debts
+add column if not exists notes text;
+
+alter table if exists public.waiter_payments
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.deliveries
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+alter table if exists public.orders
+add column if not exists session_id uuid references public.daily_sessions(id) on delete set null;
+
+create index if not exists idx_daily_sessions_business_date on public.daily_sessions(business_date desc);
+create index if not exists idx_daily_sessions_status on public.daily_sessions(status);
+create index if not exists idx_stock_opening_session_id on public.stock_opening(session_id);
+create index if not exists idx_stock_usage_session_id on public.stock_usage(session_id);
+create index if not exists idx_stock_closing_session_id on public.stock_closing(session_id);
+create index if not exists idx_production_session_id on public.production(session_id);
+create index if not exists idx_production_batches_session_id on public.production_batches(session_id);
+create index if not exists idx_inventory_movements_session_id on public.inventory_movements(session_id);
+create index if not exists idx_ingredient_movements_session_id on public.ingredient_movements(session_id);
+create index if not exists idx_debts_session_id on public.debts(session_id);
+create index if not exists idx_debts_due_date on public.debts(due_date);
+create index if not exists idx_orders_session_id on public.orders(session_id);
+
+alter table public.daily_sessions enable row level security;
+
+drop policy if exists "public read daily_sessions" on public.daily_sessions;
+create policy "public read daily_sessions" on public.daily_sessions
+  for select to anon, authenticated using (true);
+
+drop policy if exists "authenticated manage daily_sessions" on public.daily_sessions;
+create policy "authenticated manage daily_sessions" on public.daily_sessions
+  for all to authenticated using (true) with check (true);
+
+do $$
+begin
+  alter publication supabase_realtime add table public.daily_sessions;
+exception when others then null;
+end $$;

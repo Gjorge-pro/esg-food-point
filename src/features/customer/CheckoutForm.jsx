@@ -66,27 +66,27 @@ export function CheckoutForm({ orderType, onBack, onSubmit, isLoading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {/* Back Button */}
       <button
         type="button"
         onClick={onBack}
-        className="flex items-center gap-2 text-ink/60 hover:text-ink transition"
+        className="flex items-center gap-2 text-xs sm:text-sm text-ink/60 hover:text-ink transition"
       >
-        <ArrowLeft size={20} />
+        <ArrowLeft size={18} />
         <span>Back to Cart</span>
       </button>
 
       {/* Order Type Info */}
-      <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
-        <p className="text-sm text-blue-900 font-semibold">
+      <div className="p-3 sm:p-4 bg-blue-50 rounded-lg sm:rounded-xl border border-blue-200">
+        <p className="text-xs sm:text-sm text-blue-900 font-semibold">
           {orderType === 'dine_in' ? '🪑 Dine-in Order' : '🚚 Delivery Order'}
         </p>
       </div>
 
       {/* Customer Name */}
       <div>
-        <label className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
+        <label className="block text-xs sm:text-sm font-semibold text-[var(--text-primary)] mb-2">
           Your Name *
         </label>
         <input
@@ -94,21 +94,21 @@ export function CheckoutForm({ orderType, onBack, onSubmit, isLoading }) {
           value={formData.customerName}
           onChange={(e) => handleChange('customerName', e.target.value)}
           placeholder="Enter your name"
-          className={`w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200 bg-[var(--bg-main)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] ${
+          className={`w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border outline-none transition-all duration-200 text-sm bg-[var(--bg-main)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] ${
             errors.customerName
               ? 'border-red-500 focus:ring-2 focus:ring-red-500/20'
               : 'border-[var(--border)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]'
           }`}
         />
         {errors.customerName && (
-          <p className="text-red-500 text-sm mt-1">{errors.customerName}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.customerName}</p>
         )}
       </div>
 
       {/* Dine-In Specific Fields */}
       {orderType === 'dine_in' && (
         <div>
-          <label className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
+          <label className="block text-xs sm:text-sm font-semibold text-[var(--text-primary)] mb-2">
             Table Number (Optional)
           </label>
           <input
@@ -116,7 +116,7 @@ export function CheckoutForm({ orderType, onBack, onSubmit, isLoading }) {
             value={formData.tableNumber}
             onChange={(e) => handleChange('tableNumber', e.target.value)}
             placeholder="e.g., A1, 5, Corner"
-            className="w-full px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--bg-main)] text-[var(--text-primary)] outline-none transition-all duration-200 placeholder:text-[var(--text-secondary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-[var(--border)] bg-[var(--bg-main)] text-[var(--text-primary)] outline-none transition-all duration-200 text-sm placeholder:text-[var(--text-secondary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
           />
           <p className="text-xs text-[var(--text-secondary)] mt-1">We'll bring your order to your table</p>
         </div>
@@ -126,7 +126,7 @@ export function CheckoutForm({ orderType, onBack, onSubmit, isLoading }) {
       {orderType === 'delivery' && (
         <>
           <div>
-            <label className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-[var(--text-primary)] mb-2">
               Phone Number *
             </label>
             <input
@@ -134,33 +134,33 @@ export function CheckoutForm({ orderType, onBack, onSubmit, isLoading }) {
               value={formData.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
               placeholder="+254 (or local number)"
-              className={`w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200 bg-[var(--bg-main)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] ${
+              className={`w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border outline-none transition-all duration-200 text-sm bg-[var(--bg-main)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] ${
                 errors.phone
                   ? 'border-red-500 focus:ring-2 focus:ring-red-500/20'
                   : 'border-[var(--border)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]'
               }`}
             />
             {errors.phone && (
-              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+              <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-[var(--text-primary)] mb-2">
               Delivery Address *
             </label>
             <textarea
               value={formData.address}
               onChange={(e) => handleChange('address', e.target.value)}
               placeholder="Enter your full delivery address with landmarks"
-              className={`w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200 resize-none h-24 bg-[var(--bg-main)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] ${
+              className={`w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border outline-none transition-all duration-200 resize-none h-20 sm:h-24 text-sm bg-[var(--bg-main)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] ${
                 errors.address
                   ? 'border-red-500 focus:ring-2 focus:ring-red-500/20'
                   : 'border-[var(--border)] focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]'
               }`}
             />
             {errors.address && (
-              <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+              <p className="text-red-500 text-xs mt-1">{errors.address}</p>
             )}
           </div>
         </>
@@ -174,14 +174,14 @@ export function CheckoutForm({ orderType, onBack, onSubmit, isLoading }) {
       />
 
       {errors.paymentMethod && (
-        <p className="text-red-500 text-sm">{errors.paymentMethod}</p>
+        <p className="text-red-500 text-xs sm:text-sm">{errors.paymentMethod}</p>
       )}
 
       {/* Submit Button */}
       <button
         type="submit"
         disabled={isLoading || paymentStatus === 'processing'}
-        className="w-full px-4 py-3 bg-[var(--color-primary)] text-white rounded-xl font-bold hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+        className="w-full px-4 py-3 bg-[var(--color-primary)] text-white rounded-lg sm:rounded-xl font-bold text-sm hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
       >
         {isLoading || paymentStatus === 'processing' ? (
           <>

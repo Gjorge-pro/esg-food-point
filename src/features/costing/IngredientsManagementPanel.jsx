@@ -58,8 +58,8 @@ export function IngredientsManagementPanel({ notify }) {
 
   return (
     <Panel title="Ingredients Management" subtitle="Track raw materials, supplier costs, and low-stock thresholds.">
-      <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-        <div className="space-y-4">
+      <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="space-y-4 min-w-0">
           <form className="grid gap-3 sm:grid-cols-2" onSubmit={submitIngredient}>
             <label className="sm:col-span-2">
               <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-600 dark:text-gray-400">Ingredient</span>
@@ -83,30 +83,30 @@ export function IngredientsManagementPanel({ notify }) {
               <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-600 dark:text-gray-400">Low alert</span>
               <input className={inputClass} type="number" min="0" step="0.001" value={form.low_stock_threshold} onChange={(event) => setForm((current) => ({ ...current, low_stock_threshold: event.target.value }))} />
             </label>
-            <button type="submit" className="rounded-2xl bg-brand-500 px-4 py-3 font-semibold text-white sm:col-span-2">Save Ingredient</button>
+            <button type="submit" className="rounded-2xl bg-brand-500 px-4 py-3 font-semibold text-white text-sm sm:col-span-2">Save Ingredient</button>
           </form>
 
           <form className="grid gap-3 rounded-2xl border border-[var(--border)] bg-[var(--bg-main)] p-4" onSubmit={submitRestock}>
-            <h3 className="font-semibold text-[var(--text-primary)]">Restock Ingredient</h3>
+            <h3 className="font-semibold text-[var(--text-primary)] text-sm">Restock Ingredient</h3>
             <select className={inputClass} value={restock.ingredient_id} onChange={(event) => setRestock((current) => ({ ...current, ingredient_id: event.target.value }))} required>
               <option value="">Choose ingredient...</option>
               {ingredients.map((ingredient) => <option key={ingredient.id} value={ingredient.id}>{ingredient.name}</option>)}
             </select>
             <input className={inputClass} type="number" min="0" step="0.001" placeholder="Quantity added" value={restock.quantity} onChange={(event) => setRestock((current) => ({ ...current, quantity: event.target.value }))} required />
             <input className={inputClass} type="number" min="0" step="0.01" placeholder="New cost per unit" value={restock.unit_cost} onChange={(event) => setRestock((current) => ({ ...current, unit_cost: event.target.value }))} />
-            <button type="submit" className="rounded-2xl border border-brand-200 px-4 py-3 font-semibold text-[var(--text-primary)]">Add Stock</button>
+            <button type="submit" className="rounded-2xl border border-brand-200 px-4 py-3 font-semibold text-[var(--text-primary)] text-sm">Add Stock</button>
           </form>
         </div>
 
         <div className="overflow-x-auto">
-          {loading ? <p className="py-6 text-center text-sm text-gray-600 dark:text-gray-400">Loading ingredients...</p> : null}
-          <table className="min-w-full text-left text-sm">
+          {loading ? <p className="py-6 text-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">Loading ingredients...</p> : null}
+          <table className="min-w-full text-left text-xs sm:text-sm">
             <thead>
               <tr className="border-b border-[var(--border)] text-gray-600 dark:text-gray-400">
-                <th className="px-3 py-3">Ingredient</th>
-                <th className="px-3 py-3">Stock</th>
-                <th className="px-3 py-3">Alert</th>
-                <th className="px-3 py-3">Cost</th>
+                <th className="px-2 sm:px-3 py-2 sm:py-3">Ingredient</th>
+                <th className="px-2 sm:px-3 py-2 sm:py-3">Stock</th>
+                <th className="px-2 sm:px-3 py-2 sm:py-3">Alert</th>
+                <th className="px-2 sm:px-3 py-2 sm:py-3">Cost</th>
               </tr>
             </thead>
             <tbody>
@@ -114,19 +114,19 @@ export function IngredientsManagementPanel({ notify }) {
                 const low = Number(ingredient.current_stock || 0) <= Number(ingredient.low_stock_threshold || 0);
                 return (
                   <tr key={ingredient.id} className="border-b border-[var(--border)]">
-                    <td className="px-3 py-3 font-semibold text-[var(--text-primary)]">{ingredient.name}</td>
-                    <td className={low ? 'px-3 py-3 text-red-600 dark:text-red-400' : 'px-3 py-3 text-[var(--text-secondary)]'}>
+                    <td className="px-2 sm:px-3 py-2 sm:py-3 font-semibold text-[var(--text-primary)] truncate">{ingredient.name}</td>
+                    <td className={low ? 'px-2 sm:px-3 py-2 sm:py-3 text-red-600 dark:text-red-400 text-xs' : 'px-2 sm:px-3 py-2 sm:py-3 text-[var(--text-secondary)] text-xs'}>
                       {ingredient.current_stock} {ingredient.unit}
                     </td>
-                    <td className="px-3 py-3 text-[var(--text-secondary)]">{ingredient.low_stock_threshold} {ingredient.unit}</td>
-                    <td className="px-3 py-3 text-[var(--text-secondary)]">{Number(ingredient.cost_per_unit).toLocaleString()} / {ingredient.unit}</td>
+                    <td className="px-2 sm:px-3 py-2 sm:py-3 text-[var(--text-secondary)] text-xs">{ingredient.low_stock_threshold} {ingredient.unit}</td>
+                    <td className="px-2 sm:px-3 py-2 sm:py-3 text-[var(--text-secondary)] text-xs">{Number(ingredient.cost_per_unit).toLocaleString()} / {ingredient.unit}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
           {ingredients.length === 0 && !loading ? (
-            <p className="mt-4 rounded-2xl bg-[var(--bg-main)] px-4 py-5 text-sm text-[var(--text-secondary)]">No ingredients yet. Add flour, sugar, oil, salt, rice, meat, milk, gas, or charcoal.</p>
+            <p className="mt-4 rounded-2xl bg-[var(--bg-main)] px-4 py-5 text-xs sm:text-sm text-[var(--text-secondary)]">No ingredients yet. Add flour, sugar, oil, salt, rice, meat, milk, gas, or charcoal.</p>
           ) : null}
         </div>
       </div>

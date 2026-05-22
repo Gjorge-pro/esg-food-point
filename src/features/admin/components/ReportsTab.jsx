@@ -63,6 +63,13 @@ export function ReportsTab({ data, isLoading, onLoad, notify }) {
         <MetricCard label="Unpaid Orders" value={data.unpaidOrders || 0} tone="text-amber-600" />
       </div>
 
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <MetricCard label="Waste Qty" value={data.operational?.wasteQuantity || 0} tone="text-red-600" />
+        <MetricCard label="Leftovers Qty" value={data.operational?.leftoverQuantity || 0} tone="text-emerald-600" />
+        <MetricCard label="Supplier Debt" value={currency(data.operational?.debt || 0)} tone="text-amber-600" />
+        <MetricCard label="Service Completion" value={`${data.operational?.serviceCompletionRate || 0}%`} />
+      </div>
+
       <ReceiptLookupPanel notify={notify} />
 
       {/* NEW: FINANCIAL INTELLIGENCE SECTION */}

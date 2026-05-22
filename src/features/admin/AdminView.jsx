@@ -9,6 +9,7 @@ import { MenuManagementTab } from './components/MenuManagementTab';
 import { OverviewTab } from './components/OverviewTab';
 import { ReportsTab } from './components/ReportsTab';
 import { StockTab } from './components/StockTab';
+import { DailyOperationsPanel } from '../service/DailyOperationsPanel';
 
 export function AdminView({ role = 'admin' }) {
   const [activeTab, setActiveTab] = useState(role === 'manager' ? 'reports' : 'overview');
@@ -62,6 +63,10 @@ export function AdminView({ role = 'admin' }) {
             onDeleteCategory={admin.deleteCategory}
             notify={addToast}
           />
+        ) : null}
+
+        {activeTab === 'operations' ? (
+          <DailyOperationsPanel mode="admin" />
         ) : null}
 
         {activeTab === 'finance' ? (

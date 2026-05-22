@@ -94,16 +94,16 @@ export function ReportsPanel() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Daily Report</h2>
+      <h2 className="text-xl sm:text-2xl font-bold">Daily Report</h2>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="rounded-lg border-2 border-blue-300 bg-blue-50 p-4">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-700">Total Orders</p>
-              <p className="text-2xl font-bold text-blue-900">{ordersResult.total}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-blue-700">Total Orders</p>
+              <p className="text-xl sm:text-2xl font-bold text-blue-900">{ordersResult.total}</p>
             </div>
-            <div className="text-blue-400">Orders</div>
+            <div className="text-blue-400 text-sm flex-shrink-0">Orders</div>
           </div>
           <div className="mt-2 space-y-1 text-xs">
             <p className="text-green-600">Served: {ordersResult.served}</p>
@@ -113,23 +113,23 @@ export function ReportsPanel() {
 
         <div className="rounded-lg border-2 border-blue-300 bg-blue-50 p-4">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-700">Food Produced</p>
-              <p className="text-lg font-bold text-blue-900">{todayProduction.length} items</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-blue-700">Food Produced</p>
+              <p className="text-lg sm:text-xl font-bold text-blue-900">{todayProduction.length} items</p>
             </div>
-            <div className="text-blue-400">Kitchen</div>
+            <div className="text-blue-400 text-sm flex-shrink-0">Kitchen</div>
           </div>
           <p className="mt-2 text-xs text-blue-700">Value: {currency(todayTotal)}</p>
         </div>
 
         <div className="rounded-lg border-2 border-green-300 bg-green-50 p-4">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-green-700">Stock Items</p>
-              <p className="text-2xl font-bold text-green-900">{stockItems}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-green-700">Stock Items</p>
+              <p className="text-xl sm:text-2xl font-bold text-green-900">{stockItems}</p>
             </div>
-            <div className="text-green-400">
-              <Package size={24} />
+            <div className="text-green-400 flex-shrink-0">
+              <Package size={20} />
             </div>
           </div>
           <div className="mt-2 space-y-1 text-xs">
@@ -139,12 +139,12 @@ export function ReportsPanel() {
 
         <div className="rounded-lg border-2 border-blue-300 bg-blue-50 p-4">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-700">Deliveries</p>
-              <p className="text-2xl font-bold text-blue-900">{deliveredCount}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-blue-700">Deliveries</p>
+              <p className="text-xl sm:text-2xl font-bold text-blue-900">{deliveredCount}</p>
             </div>
-            <div className="text-blue-400">
-              <Truck size={24} />
+            <div className="text-blue-400 flex-shrink-0">
+              <Truck size={20} />
             </div>
           </div>
           <p className="mt-2 text-xs text-red-600">Unpaid: {unpaidCount}</p>
@@ -152,32 +152,32 @@ export function ReportsPanel() {
       </div>
 
       <div className="rounded-lg border-2 border-[var(--border)] bg-[var(--bg-card)] p-4">
-        <h3 className="mb-4 font-bold">Financial Summary (Today)</h3>
-        <div className="grid grid-cols-3 gap-3">
+        <h3 className="mb-4 font-bold text-sm sm:text-base">Financial Summary (Today)</h3>
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <div className="rounded bg-green-100 dark:bg-green-900/20 p-3">
             <p className="mb-1 text-xs text-green-700 dark:text-green-400">Revenue</p>
-            <p className="text-xl font-bold text-green-900 dark:text-green-300">{currency(financialData.revenue)}</p>
+            <p className="text-base sm:text-lg font-bold text-green-900 dark:text-green-300 truncate">{currency(financialData.revenue)}</p>
           </div>
           <div className="rounded bg-red-100 dark:bg-red-900/20 p-3">
             <p className="mb-1 text-xs text-red-700 dark:text-red-400">Expenses</p>
-            <p className="text-xl font-bold text-red-900 dark:text-red-300">{currency(financialData.expenses)}</p>
+            <p className="text-base sm:text-lg font-bold text-red-900 dark:text-red-300 truncate">{currency(financialData.expenses)}</p>
           </div>
           <div className="rounded bg-blue-100 dark:bg-blue-900/20 p-3">
             <p className="mb-1 text-xs text-blue-700 dark:text-blue-400">Net Profit</p>
-            <p className={`text-xl font-bold ${profitColor}`}>{currency(financialData.netProfit)}</p>
+            <p className={`text-base sm:text-lg font-bold truncate ${profitColor}`}>{currency(financialData.netProfit)}</p>
           </div>
         </div>
-        {isLoading && <p className="mt-2 text-sm text-gray-500">Loading financial data...</p>}
+        {isLoading && <p className="mt-2 text-xs sm:text-sm text-gray-500">Loading financial data...</p>}
       </div>
 
       {customerSources.length > 0 && (
-        <div className="rounded-lg border-2 border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 p-4">
-          <h3 className="mb-3 font-bold text-purple-900 dark:text-purple-300">Customer Sources Today</h3>
-          <div className="grid gap-2">
+        <div className="rounded-lg border-2 border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 p-4 overflow-x-auto">
+          <h3 className="mb-3 font-bold text-xs sm:text-sm text-purple-900 dark:text-purple-300">Customer Sources Today</h3>
+          <div className="grid gap-2 min-w-min">
             {customerSources.map(source => (
-              <div key={source.source} className="flex justify-between rounded bg-white dark:bg-gray-800 p-2">
-                <span className="text-sm font-medium capitalize text-purple-700 dark:text-purple-300">{source.source.replace(/_/g, ' ')}</span>
-                <span className="text-sm text-purple-600 dark:text-purple-400">{source.total_orders} orders ({source.percentage}%)</span>
+              <div key={source.source} className="flex justify-between rounded bg-white dark:bg-gray-800 p-2 gap-4">
+                <span className="text-xs sm:text-sm font-medium capitalize text-purple-700 dark:text-purple-300 whitespace-nowrap">{source.source.replace(/_/g, ' ')}</span>
+                <span className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 whitespace-nowrap">{source.total_orders} orders ({source.percentage}%)</span>
               </div>
             ))}
           </div>
@@ -185,8 +185,8 @@ export function ReportsPanel() {
       )}
 
       <div className="rounded-lg border border-brand-100 dark:border-brand-700 bg-brand-50 dark:bg-brand-900/20 p-4">
-        <h3 className="mb-3 font-bold">Today&apos;s Summary</h3>
-        <div className="space-y-2 text-sm text-ink/75 dark:text-gray-300">
+        <h3 className="mb-3 font-bold text-xs sm:text-sm">Today&apos;s Summary</h3>
+        <div className="space-y-2 text-xs sm:text-sm text-ink/75 dark:text-gray-300">
           <p>
             <span className="font-semibold">{ordersResult.total} orders</span> placed (Served: {ordersResult.served}, Pending: {ordersResult.pending})
           </p>

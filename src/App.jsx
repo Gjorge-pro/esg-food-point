@@ -14,7 +14,7 @@ export default function App() {
   return (
     <div className="flex min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)]">
       {!isFullscreenRoute && <Navbar />}
-      <main className={isFullscreenRoute ? 'w-full' : 'flex-1 ml-60'}>
+      <main className={isFullscreenRoute ? 'w-full' : 'flex-1 sm:ml-60 pt-16 sm:pt-0'}>
         <Routes>
           <Route path="/" element={<CustomerPage />} />
           <Route path="/order-history" element={<OrderHistoryPage />} />

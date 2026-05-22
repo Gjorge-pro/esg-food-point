@@ -51,6 +51,13 @@ export function OverviewTab({ data, isLoading, onRefresh, lastLoadedAt }) {
         <SummaryCard label="Unpaid Orders" value={data.unpaidOrders || 0} tone="text-amber-600" />
       </div>
 
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <SummaryCard label="Waste Qty" value={data.operational?.wasteQuantity || 0} tone="text-red-600" />
+        <SummaryCard label="Leftover Qty" value={data.operational?.leftoverQuantity || 0} tone="text-emerald-600" />
+        <SummaryCard label="Supplier Debt" value={currency(data.operational?.debt || 0)} tone="text-amber-600" />
+        <SummaryCard label="Service Completion" value={`${data.operational?.serviceCompletionRate || 0}%`} />
+      </div>
+
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <Panel
           title="Performance Insights"

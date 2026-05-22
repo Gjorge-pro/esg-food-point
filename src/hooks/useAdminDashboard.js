@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient';
 import { getLowStockItems } from '../lib/inventoryService';
+import dailyOperationsService from '../services/dailyOperationsService';
 import {
   buildExpenseDistribution,
   buildReportBreakdown,
@@ -36,6 +37,7 @@ const emptyOverview = {
   expenseDistribution: [],
   paidOrders: 0,
   unpaidOrders: 0,
+  operational: createEmptyOperationalMetrics(),
 };
 
 const emptyFinance = {
@@ -79,6 +81,7 @@ const emptyReports = {
   ordersSeries: [],
   hourlyOrdersSeries: [],
   expenseDistribution: [],
+  operational: createEmptyOperationalMetrics(),
 };
 
 export function useAdminDashboard() {
@@ -224,6 +227,7 @@ export function useAdminDashboard() {
         production: productionResponse.data || [],
       });
       const inventoryLowStockItems = await loadInventoryLowStockItems();
+      const operationalSnapshot = await safeLoadOperationalSnapshot(todayRange.startDate);
       const chartTimeline = buildTimelineSeries({
         orders: chartOrders,
         income: buildPaidOrderIncomeEntries(chartOrders),
@@ -292,6 +296,7 @@ export function useAdminDashboard() {
         hourlyOrdersSeries: buildHourlyOrderSeries(todayOrders),
         topItemsChartData: buildTopSoldItems(chartOrders, 8),
         expenseDistribution: buildExpenseDistribution(chartExpenses),
+        operational: operationalSnapshot.metrics,
       });
 
       markLoaded('overview');
@@ -507,6 +512,7 @@ export function useAdminDashboard() {
       const totalIncome = calculatePaidOrderRevenue(orders);
       const totalExpenses = sumByField(expenses, 'amount');
       const chartTimeline = buildTimelineSeries({ orders, income: buildPaidOrderIncomeEntries(orders), expenses });
+      const operationalMetrics = await safeLoadOperationalRangeMetrics(range.startDate, range.endDate);
 
       setReports({
         period,
@@ -535,6 +541,7 @@ export function useAdminDashboard() {
         })),
         hourlyOrdersSeries: buildHourlyOrderSeries(orders),
         expenseDistribution: buildExpenseDistribution(expenses),
+        operational: operationalMetrics,
       });
 
       markLoaded('reports');
@@ -721,4 +728,41 @@ async function loadInventoryLowStockItems() {
       item_name: item.menu_items?.name || 'Inventory item',
       remaining: `${item.stock_quantity} ${item.unit}`,
     }));
+}
+
+function createEmptyOperationalMetrics() {
+  return {
+    openingItems: 0,
+    closingItems: 0,
+    productionItems: 0,
+    totalOrders: 0,
+    paidOrders: 0,
+    pendingOrders: 0,
+    servedOrders: 0,
+    revenue: 0,
+    expenses: 0,
+    debt: 0,
+    operatingProfit: 0,
+    wasteQuantity: 0,
+    leftoverQuantity: 0,
+    serviceCompletionRate: 0,
+  };
+}
+
+async function safeLoadOperationalSnapshot(businessDate) {
+  try {
+    return await dailyOperationsService.getOperationalSnapshot(businessDate);
+  } catch (error) {
+    console.warn('Operational snapshot unavailable:', error.message);
+    return { metrics: createEmptyOperationalMetrics() };
+  }
+}
+
+async function safeLoadOperationalRangeMetrics(startDate, endDate) {
+  try {
+    return await dailyOperationsService.getOperationalRangeMetrics(startDate, endDate);
+  } catch (error) {
+    console.warn('Operational range metrics unavailable:', error.message);
+    return createEmptyOperationalMetrics();
+  }
 }
