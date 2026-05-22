@@ -124,14 +124,14 @@ drop policy if exists "staff manage menu items" on public.menu_items;
 create policy "staff manage menu items"
   on public.menu_items for all to authenticated using (public.is_staff(auth.uid())) with check (public.is_staff(auth.uid()));
 
--- Orders: staff can read/write, customers cannot read full table
+-- Orders: customers can insert (for online ordering), staff can read/manage
 drop policy if exists "staff select orders" on public.orders;
 create policy "staff select orders"
   on public.orders for select to authenticated using (public.is_staff(auth.uid()));
 
-drop policy if exists "staff insert orders" on public.orders;
-create policy "staff insert orders"
-  on public.orders for insert to authenticated with check (public.is_staff(auth.uid()));
+drop policy if exists "customers insert orders" on public.orders;
+create policy "customers insert orders"
+  on public.orders for insert to anon, authenticated with check (true);
 
 drop policy if exists "staff update orders" on public.orders;
 create policy "staff update orders"
@@ -1061,8 +1061,26 @@ with check (
 
 DROP POLICY IF EXISTS "allow public customer orders" ON public.orders;
 
-CREATE POLICY "customer public insert orders"
+CREATE POLICY "allow public customer orders"
 ON public.orders
+AS PERMISSIVE
+FOR INSERT
+TO anon, authenticated
+WITH CHECK (true);
+
+---- This policy allows customers (both anonymous and authenticated) to insert new orders,
+
+CREATE POLICY "customers insert orders"
+ON public.orders
+AS PERMISSIVE
+FOR INSERT
+TO anon, authenticated
+WITH CHECK (true);
+
+DROP POLICY IF EXISTS "staff insert order_items" ON public.order_items;
+
+CREATE POLICY "customers insert order_items"
+ON public.order_items
 AS PERMISSIVE
 FOR INSERT
 TO anon, authenticated
